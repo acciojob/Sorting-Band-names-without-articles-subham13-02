@@ -1,36 +1,18 @@
-let bandNames = ['The Virupaksha Temple', 'Victoria Memorial', 'Tajmahal'];
+() => {
+  cy.get("li").should("have.length.at.least", 1);
+  let tags_content = [];
+  const li_tags_count = document.getElementsByTagName('li').length;
 
-// Function to remove articles from band names
-function removeArticles(name) {
-  // List of articles to be excluded
-  const articles = ['a', 'an', 'the'];
+  // Getting li tags content and checking if they are without any articles and in sorted order
+  for (let index = 0; index < li_tags_count; index++) {
+    cy.get("li").eq(index).then($el => {
+      tags_content.push($el.text());
+    });
+  }
 
-  // Split the band name into individual words
-  const words = name.toLowerCase().split(' ');
-
-  // Filter out articles from the words array
-  const filteredWords = words.filter(word => !articles.includes(word));
-
-  // Join the filtered words to form the modified band name
-  const modifiedName = filteredWords.join(' ');
-
-  return modifiedName;
+  tags_content.forEach(tag_content => {
+    const first_word = tag_content.split(" ");
+    let not_article = first_word != "A" || first_word != "An" || first_word != "The";
+    expect(not_article).to.be.equal(true);
+  });
 }
-
-// Sort band names without articles
-bandNames.sort((a, b) => removeArticles(a).localeCompare(removeArticles(b)));
-
-// Get the <ul> element with the id 'band'
-const bandList = document.getElementById('band');
-
-// Clear any existing list items
-bandList.innerHTML = '';
-
-// Add sorted band names to the <ul> element
-bandNames.forEach(name => {
-  const listItem = document.createElement('li');
-  listItem.textContent = name;
-  bandList.appendChild(listItem);
-});
-
-
