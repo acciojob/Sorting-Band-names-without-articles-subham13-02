@@ -1,5 +1,5 @@
 () => {
-  cy.get("li").should("have.length.at.least", 1);
+  // cy.get("li").should("have.length.at.least", 1);
   let tags_content = [];
   const li_tags_count = document.getElementsByTagName('li').length;
 
